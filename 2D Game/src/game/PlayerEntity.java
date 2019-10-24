@@ -27,6 +27,8 @@ public class PlayerEntity extends Entity {
 		if(!level.collideWithWall(this)) {
 			super.move();
 			points += level.collideWithPoint(this);
+		}else {
+			
 		}
 	}
 	

@@ -57,8 +57,8 @@ public class AssetLoader {
 		ArrayList<Rectangle> liste = new ArrayList<Rectangle>();
 		for(int y=0; y<data.length; y++) {
 			for(int x=0; x<data[y].length; x++) {
-				if(data[y][x] == 1)
-					liste.add(new Rectangle(x*16,y*16,15,15));
+				if(data[y][x]==1 || data[y][x]==2 || data[y][x]==3 || data[y][x]==4 || data[y][x]==5 || data[y][x]==6)
+					liste.add(new Rectangle(x*16,y*16,16,16));
 			}
 		}
 		Rectangle[] toReturn = new Rectangle[liste.size()];
@@ -72,7 +72,7 @@ public class AssetLoader {
 		String content = "";
 		try {
 			//Lire le fichier
-			String tamere = new File("ressources\\levels\\"+fileName+".level").getAbsolutePath();
+			String tamere = new File("ressources\\datas\\"+fileName+".level").getAbsolutePath();
 			BufferedReader reader = new BufferedReader(new FileReader(new File("ressources\\levels\\"+fileName+".level")));
 			String line = reader.readLine();
 			String header;
@@ -88,6 +88,12 @@ public class AssetLoader {
 			e.printStackTrace();
 		}
 		int[][] data = loadTileMap(content);
-		return new Level(new Sprite(new TextureLoader(),"mur", 1),new Sprite(new TextureLoader(),"point", 1),data,loadCollision(data));
+		Sprite[] murs =new Sprite[6];
+		
+		for(int i = 0; i< murs.length;i++) {
+			murs[i] = new Sprite(new TextureLoader(),"mur"+(i+1), 1);
+		}
+		
+		return new Level(murs,new Sprite(new TextureLoader(),"point", 1),data,loadCollision(data));
 	}
 }

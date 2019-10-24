@@ -30,7 +30,7 @@ public class Display {
 		//Contexte
 		glfwMakeContextCurrent(window);
 		// Desactiver la v-sync
-		glfwSwapInterval(1);
+		glfwSwapInterval(0);
 
 		//Rendre la fenetre visible
 		glfwShowWindow(window);
