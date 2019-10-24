@@ -12,9 +12,9 @@ public class Menu extends GameState{
 	@Override
 	public void initialisation(Game context) {
 		super.initialisation(context);
-		logo = new Sprite(context.textureLoader,"pacmanlogo.png");
+		logo = new Sprite(context.textureLoader,"pacmanlogo",1);
 		logo.setZoom(.425f);
-		enter = new Sprite(context.textureLoader,"pressenter.png");
+		enter = new Sprite(context.textureLoader,"pressenter",1);
 		enter.setZoom(1f);
 		
 	}
@@ -28,8 +28,8 @@ public class Menu extends GameState{
 
 	@Override
 	public void render() {
-		logo.draw(0,0);
-		enter.draw(context.width/2 - enter.getWidth()/2,context.height/2 - enter.getHeight()/2);
+		logo.draw(context.width/2,logo.getHeight()/2);
+		enter.draw(context.width/2,context.height/2 + enter.getHeight()/2);
 	}
 
 }

@@ -1,51 +1,11 @@
 package engine;
-/*
- * Copyright (c) 2002-2010 LWJGL Project
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- * * Redistributions of source code must retain the above copyright
- *   notice, this list of conditions and the following disclaimer.
- *
- * * Redistributions in binary form must reproduce the above copyright
- *   notice, this list of conditions and the following disclaimer in the
- *   documentation and/or other materials provided with the distribution.
- *
- * * Neither the name of 'LWJGL' nor the names of
- *   its contributors may be used to endorse or promote products derived
- *   from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
- * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
- 
 import java.io.IOException;
- 
+
 import static org.lwjgl.opengl.GL11.*;
- 
-/**
- * Implementation of sprite that uses an OpenGL quad and a texture
- * to render a given image to the screen.
- *
- * @author Kevin Glass
- * @author Brian Matzon
- */
-public class Sprite {
- 
+
+public class Sprite{
     /** The texture that stores the image for this sprite */
-    private Texture texture;
+    private Texture[] frameTextures;
  
     /** The width in pixels of this sprite */
     private int         width;
@@ -54,6 +14,12 @@ public class Sprite {
     private int         height;
     /** The actual zoom of the sprite*/
     private float			zoom;
+    
+    private int frameSpeed = 14;
+    private int counter = 0;
+    private float rotation = 0;
+    
+    private int currentFrame = 0;
  
     /**
      * Create a new sprite from a specified image.
@@ -61,22 +27,32 @@ public class Sprite {
      * @param loader the texture loader to use
      * @param ref A reference to the image on which this sprite should be based
      */
-    public Sprite(TextureLoader loader, String ref) {
+    public Sprite(TextureLoader loader, String ref, int nbFrames) {
     try {
-            texture = loader.getTexture("ressources/" + ref);
-      zoom=1;
-      width = (int) (texture.getImageWidth()*zoom);
-      height = (int) (texture.getImageHeight()*zoom);
+    	frameTextures = new Texture[nbFrames];
+    	for(int i=0;i<frameTextures.length;i++) {
+    		if(nbFrames>1) {
+    			frameTextures[i] = loader.getTexture("ressources/" + ref + "/"+ref+i+".png");
+    		}else {
+    			frameTextures[i] = loader.getTexture("ressources/" + ref +".png");
+    		}
+		}
+    	zoom = 1;
+    	width = (int) (frameTextures[0].getImageWidth()*zoom);
+    	height = (int) (frameTextures[0].getImageHeight()*zoom);
     } catch (IOException ioe) {
         ioe.printStackTrace();
-      System.exit(-1);
     }
     }
     
     public void setZoom(float factor) {
     	zoom = factor;
-    	width = (int) (texture.getImageWidth()*zoom);
-        height = (int) (texture.getImageHeight()*zoom); 
+    	width = (int) (frameTextures[0].getImageWidth()*zoom);
+    	height = (int) (frameTextures[0].getImageHeight()*zoom);
+    }
+    
+    public void setRotation(float rot){
+    	rotation = rot;
     }
     
     
@@ -86,7 +62,7 @@ public class Sprite {
      * @return The width of this sprite in pixels
      */
     public int getWidth() {
-        return texture.getImageWidth();
+        return width;
     }
  
     /**
@@ -95,7 +71,7 @@ public class Sprite {
      * @return The height of this sprite in pixels
      */
     public int getHeight() {
-        return texture.getImageHeight();
+        return height;
     }
  
     /**
@@ -105,29 +81,40 @@ public class Sprite {
      * @param y The y location at which to draw this sprite
      */
     public void draw(int x, int y) {
+    	if(frameTextures.length==1) {
+    		currentFrame = 0;
+    	}else {
+    		 if (counter == (frameSpeed - 1)) {
+    		      currentFrame = (currentFrame + 1) % frameTextures.length;
+    		 }
+    		 
+    		 counter = (counter + 1) % frameSpeed;
+    	}
         // store the current model matrix
         glPushMatrix();
  
+        
         // bind to the appropriate texture for this sprite
-        texture.bind();
- 
+        frameTextures[currentFrame].bind();
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         // translate to the right location and prepare to draw
         glTranslatef(x, y, 0);
+        glRotatef(rotation, 0, 0, 1);
         //glRotate
         // draw a quad textured to match the sprite
         glBegin(GL_QUADS);
         {
             glTexCoord2f(0, 0);
-            glVertex2f(0, 0);
+            glVertex2f(-width/2, -height/2);
  
-            glTexCoord2f(0, texture.getHeight());
-            glVertex2f(0, height);
+            glTexCoord2f(0, frameTextures[currentFrame].getHeight());
+            glVertex2f(-width/2, height/2);
  
-            glTexCoord2f(texture.getWidth(), texture.getHeight());
-            glVertex2f(width, height);
+            glTexCoord2f(frameTextures[currentFrame].getWidth(), frameTextures[currentFrame].getHeight());
+            glVertex2f(width/2, height/2);
  
-            glTexCoord2f(texture.getWidth(), 0);
-            glVertex2f(width, 0);
+            glTexCoord2f(frameTextures[currentFrame].getWidth(), 0);
+            glVertex2f(width/2, -height/2);
         }
         glEnd();
  
@@ -135,3 +122,4 @@ public class Sprite {
         glPopMatrix();
     }
 }
+

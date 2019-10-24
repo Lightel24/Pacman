@@ -75,6 +75,6 @@ public class AssetLoader {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return new Level(new Sprite(new TextureLoader(),"mur.png"),loadTileMap(content),loadCollision(content));
+		return new Level(new Sprite(new TextureLoader(),"mur", 1),loadTileMap(content),loadCollision(content));
 	}
 }

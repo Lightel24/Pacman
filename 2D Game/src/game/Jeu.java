@@ -21,7 +21,8 @@ public class Jeu extends GameState{
 	@Override
 	public void initialisation(Game context) {
 		super.initialisation(context);
-		pacman = new PlayerEntity(new Sprite(context.textureLoader, "pacman.png"), context.width/2,context.height/2);
+		Sprite sprite = new Sprite(context.textureLoader, "pacman",4);
+		pacman = new PlayerEntity(sprite, context.width/2,context.height/2);
 		//Pour centrer le niveau à l'écran:
 		timer.init();
 		level = AssetLoader.loadLevel("stage1");
@@ -47,25 +48,13 @@ public class Jeu extends GameState{
 
 	private void checkInput() {
 		if(context.isKeyDown(GLFW.GLFW_KEY_UP)) {
-			if(pacman.getVerticalSpeed() == 0) {
-				pacman.setVerticalSpeed(-SPEED*delta);
-				pacman.setHorizontalSpeed(0);
-			}
+			pacman.up(delta);
 		}else if(context.isKeyDown(GLFW.GLFW_KEY_DOWN)){
-			if(pacman.getVerticalSpeed() == 0) {
-				pacman.setVerticalSpeed(SPEED*delta);
-				pacman.setHorizontalSpeed(0);
-			}
+			pacman.down(delta);			
 		}else if(context.isKeyDown(GLFW.GLFW_KEY_LEFT)){
-			if(pacman.getHorizontalSpeed() == 0) {
-				pacman.setVerticalSpeed(0);
-				pacman.setHorizontalSpeed(-SPEED*delta);
-			}
+			pacman.left(delta);			
 		}else if(context.isKeyDown(GLFW.GLFW_KEY_RIGHT)){
-			if(pacman.getHorizontalSpeed() == 0) {
-				pacman.setVerticalSpeed(0);
-				pacman.setHorizontalSpeed(SPEED*delta);
-			}
+			pacman.right(delta);			
 		}
 	}
 }
