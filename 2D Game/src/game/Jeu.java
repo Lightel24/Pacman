@@ -21,7 +21,7 @@ public class Jeu extends GameState{
 	@Override
 	public void initialisation(Game context) {
 		super.initialisation(context);
-		pacman = new PlayerEntity(new Sprite(context.textureLoader, "pacman.png"), 0f,0f);
+		pacman = new PlayerEntity(new Sprite(context.textureLoader, "pacman.png"), context.width/2,context.height/2);
 		//Pour centrer le niveau à l'écran:
 		timer.init();
 		level = AssetLoader.loadLevel("stage1");
