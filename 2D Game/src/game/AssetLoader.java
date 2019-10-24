@@ -88,6 +88,6 @@ public class AssetLoader {
 			e.printStackTrace();
 		}
 		int[][] data = loadTileMap(content);
-		return new Level(new Sprite(new TextureLoader(),"mur", 1),data,loadCollision(data));
+		return new Level(new Sprite(new TextureLoader(),"mur", 1),new Sprite(new TextureLoader(),"point", 1),data,loadCollision(data));
 	}
 }

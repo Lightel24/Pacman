@@ -12,6 +12,7 @@ public class PlayerEntity extends Entity {
 	Direction currentDirection = Direction.STOP;
 	Direction nextDirection = Direction.STOP;
 	float SPEED = 250f;
+	private int points;
 		
 	protected PlayerEntity(Sprite sprite, float x, float y) {
 		super(sprite, x, y);
@@ -19,14 +20,13 @@ public class PlayerEntity extends Entity {
 	
 	public void move(Level level, float delta) {
 		processDirection(nextDirection,delta);
-		if(!level.collideWith(this)){
+		if(!level.collideWithWall(this)){
 			currentDirection = nextDirection;
 		}
 		processDirection(currentDirection,delta);
-		if(!level.collideWith(this)) {
+		if(!level.collideWithWall(this)) {
 			super.move();
-			dx=0;
-			dy=0;
+			points += level.collideWithPoint(this);
 		}
 	}
 	
