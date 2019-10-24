@@ -35,7 +35,7 @@ public class Jeu extends GameState{
 		timer.updateFPS();
 		timer.update();
 		checkInput();
-		pacman.move(level);
+		pacman.move(level,delta);
 	}
 
 	@Override
