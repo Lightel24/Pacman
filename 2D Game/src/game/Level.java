@@ -18,6 +18,11 @@ public class Level {
 		collisions = coll;
 		xOffset =(int)( (Game.width/2) -	((level[0].length)/2)*mur.getWidth()); 
 		yOffset =(int)( (Game.height/2) -	((level.length)/2)*mur.getHeight()); 
+		
+		for(Rectangle rec: collisions) {
+			rec.setBounds(rec.x+xOffset, rec.y+yOffset, rec.width, rec.height);
+		}
+		
 	}
 	
 	public void render() {

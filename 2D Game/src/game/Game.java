@@ -30,7 +30,7 @@ public class Game{
         glLoadIdentity();
         
         //On mets le canevas a la taille de la fenetre
-        glOrtho(0, width/2, height/2, 0, -1, 1);
+        glOrtho(0, width, height, 0, -1, 1);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         glViewport(0, 0,(int) (width*1),(int) (height*1)); // Tester pour un zoom pas dégueu
