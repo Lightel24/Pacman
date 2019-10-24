@@ -3,9 +3,9 @@ package game;
 import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import engine.Sprite;
 import engine.TextureLoader;
@@ -44,8 +44,8 @@ public class AssetLoader {
 		return data;
 	}
 
-	private static Rectangle[] loadCollision(String fileData) {
-		
+	private static Rectangle[] loadCollision(int[][] data) {
+		/*
 		fileData = fileData.substring(fileData.indexOf("$")+2);
 		String[] lines = fileData.split(":");
 		Rectangle[] toReturn = new Rectangle[lines.length];
@@ -53,7 +53,19 @@ public class AssetLoader {
 			String[] data = lines[i].split(",");
 			toReturn[i] = new Rectangle();
 			toReturn[i].setBounds(Integer.parseInt(data[0]), Integer.parseInt(data[1]), Integer.parseInt(data[2]),Integer.parseInt(data[3]));
+		}*/
+		ArrayList<Rectangle> liste = new ArrayList<Rectangle>();
+		for(int y=0; y<data.length; y++) {
+			for(int x=0; x<data[y].length; x++) {
+				if(data[y][x] == 1)
+					liste.add(new Rectangle(x*16,y*16,15,15));
+			}
 		}
+		Rectangle[] toReturn = new Rectangle[liste.size()];
+		for(int i = 0 ; i< toReturn.length; i++) {
+			toReturn[i] = liste.get(i);
+		}
+		
 		return toReturn;
 	}
 	public static Level loadLevel(String fileName) {
@@ -75,6 +87,7 @@ public class AssetLoader {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return new Level(new Sprite(new TextureLoader(),"mur", 1),loadTileMap(content),loadCollision(content));
+		int[][] data = loadTileMap(content);
+		return new Level(new Sprite(new TextureLoader(),"mur", 1),data,loadCollision(data));
 	}
 }

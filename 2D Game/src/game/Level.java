@@ -7,7 +7,7 @@ import engine.Sprite;
 
 public class Level {
 	int[][] level;
-	Rectangle[] collisions = new Rectangle[] {new Rectangle(100,100,100,100)};		
+	Rectangle[] collisions;		
 	
 	int xOffset, yOffset;	
 	Sprite mur;
