@@ -37,7 +37,7 @@ public class Game{
         
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        setGameState(new Jeu());
+        setGameState(new Menu());
 	}
 
 	private void mainLoop() {

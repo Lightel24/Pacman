@@ -52,6 +52,8 @@ public class Sprite {
  
     /** The height in pixels of this sprite */
     private int         height;
+    /** The actual zoom of the sprite*/
+    private float			zoom;
  
     /**
      * Create a new sprite from a specified image.
@@ -62,14 +64,22 @@ public class Sprite {
     public Sprite(TextureLoader loader, String ref) {
     try {
             texture = loader.getTexture("ressources/" + ref);
-      width = texture.getImageWidth();
-      height = texture.getImageHeight();
+      zoom=1;
+      width = (int) (texture.getImageWidth()*zoom);
+      height = (int) (texture.getImageHeight()*zoom);
     } catch (IOException ioe) {
         ioe.printStackTrace();
       System.exit(-1);
     }
     }
- 
+    
+    public void setZoom(float factor) {
+    	zoom = factor;
+    	width = (int) (texture.getImageWidth()*zoom);
+        height = (int) (texture.getImageHeight()*zoom); 
+    }
+    
+    
     /**
      * Get the width of this sprite in pixels
      *
