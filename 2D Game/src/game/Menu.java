@@ -37,4 +37,10 @@ public class Menu extends GameState{
 		editeur.draw(context.width/2,context.height/2 + enter.getHeight()*2);
 	}
 
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

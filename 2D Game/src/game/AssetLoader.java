@@ -2,8 +2,10 @@ package game;
 
 import java.awt.Rectangle;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -15,9 +17,8 @@ public class AssetLoader {
 	public static int[][] loadTileMap(String fileData){
 		int[][] data = null;
 		try {
-			fileData = fileData.substring(0,fileData.indexOf("$"));
 			String[] lines = fileData.split(":");
-			data = new int[lines.length][lines[0].length()/2];
+			data = new int[lines.length][lines[0].split(",").length];
 			for(int y=0; y<lines.length; y++) {
 				String[] cases = lines[y].split(",");
 				for(int x=0; x<cases.length; x++) {
@@ -68,7 +69,7 @@ public class AssetLoader {
 		
 		return toReturn;
 	}
-	public static Level loadLevel(String fileName) {
+	public static Level loadLevel(String fileName,TextureLoader textureLoader) {
 		String content = "";
 		try {
 			//Lire le fichier
@@ -84,12 +85,33 @@ public class AssetLoader {
 			e.printStackTrace();
 		}
 		int[][] data = loadTileMap(content);
-		Sprite[] murs =new Sprite[6];
 		
-		for(int i = 0; i< murs.length;i++) {
-			murs[i] = new Sprite(new TextureLoader(),"mur"+(i+1), 1);
-		}
+		Sprite mur = new Sprite(textureLoader,"mur", 1);
 		
-		return new Level(murs,new Sprite(new TextureLoader(),"point", 1),data,loadCollision(data));
+		return new Level(mur,new Sprite(textureLoader,"point", 1),data,loadCollision(data));
+	}
+	
+	public static void saveLevel(String data, int number) {
+		new Thread(){
+			@Override
+			public void run() {
+				BufferedWriter writer = null;
+				try {
+					writer = new BufferedWriter(new FileWriter(new File("ressources\\levels\\"+"stage"+number+".level")));
+					writer.write(data);
+					writer.flush();
+					System.out.println("Enregistrement terminé");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}finally {
+					try {
+						writer.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			
+		}.start();
 	}
 }

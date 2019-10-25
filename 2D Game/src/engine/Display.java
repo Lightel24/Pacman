@@ -9,11 +9,19 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
+
+import java.nio.DoubleBuffer;
 public class Display {
 	
 	private long window;
+	private DoubleBuffer mouseX;
+	private DoubleBuffer mouseY;
+	
 	
 	public Display(int width, int height, String nom) {
+		
+		mouseX = BufferUtils.createDoubleBuffer(1);
+		mouseY = BufferUtils.createDoubleBuffer(1);
 		//Initialisation
 		if(!GLFW.glfwInit()) {
 			System.err.println("C'est la merde, GLFW marche pas!");
@@ -36,8 +44,7 @@ public class Display {
 		glfwShowWindow(window);
 		GL.createCapabilities();
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		//Activer les textures
-        glEnable(GL_TEXTURE_2D);
+		glfwSetInputMode(window,GLFW_CURSOR,GLFW_CURSOR_NORMAL);
 
         //On fait de la 2D, pas besoins de profondeur
         glDisable(GL_DEPTH_TEST);
@@ -68,6 +75,19 @@ public class Display {
 	
 	public boolean isKeyDown(int keycode) {
 		return GLFW.glfwGetKey(window, keycode) == GLFW_TRUE;
+	}
+	
+	public boolean isMouseButtonDown(int buttonCode) {
+		return glfwGetMouseButton(window, buttonCode) == GLFW_TRUE;
+	}
+	
+	public double[] getMousePos() {
+		glfwGetCursorPos(window, mouseX, mouseY);
+		double x = mouseX.get();
+		mouseX.clear();
+		double y = mouseY.get();
+		mouseY.clear();
+		return new double[] {x,y};
 	}
 
 }

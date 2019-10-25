@@ -64,4 +64,10 @@ public class Game{
 	public boolean isKeyDown(int keycode) {
 		return display.isKeyDown(keycode);
 	}
+	public boolean isMouseButtonDown(int keycode) {
+		return display.isMouseButtonDown(keycode);
+	}
+	public double[] getMousePos() {
+		return display.getMousePos();
+	}		
 }

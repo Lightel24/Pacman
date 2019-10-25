@@ -22,10 +22,10 @@ public class Jeu extends GameState{
 	public void initialisation(Game context) {
 		super.initialisation(context);
 		Sprite sprite = new Sprite(context.textureLoader, "pacman",4);
-		pacman = new PlayerEntity(sprite, context.width/2,context.height/2);
 		//Pour centrer le niveau à l'écran:
 		timer.init();
-		level = AssetLoader.loadLevel("stage1");
+		level = AssetLoader.loadLevel("stage1",context.textureLoader);
+		pacman = new PlayerEntity(sprite, level.spawn.x,level.spawn.y);
 
 	}
 	
@@ -56,5 +56,14 @@ public class Jeu extends GameState{
 		}else if(context.isKeyDown(GLFW.GLFW_KEY_RIGHT)){
 			pacman.right(delta);			
 		}
+		if(context.isKeyDown(GLFW.GLFW_KEY_ESCAPE)) {
+			context.setGameState(new Menu());
+		}
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
 	}
 }

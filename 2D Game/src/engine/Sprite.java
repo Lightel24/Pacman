@@ -90,6 +90,8 @@ public class Sprite{
     		 
     		 counter = (counter + 1) % frameSpeed;
     	}
+        
+        glEnable(GL_TEXTURE_2D);
         // store the current model matrix
         glPushMatrix();
  
