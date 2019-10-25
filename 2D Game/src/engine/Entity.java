@@ -69,7 +69,11 @@ public abstract class Entity {
 	
 	public boolean collideWith(Rectangle other) {
 		Rectangle me = new Rectangle();
-		me.setBounds((int)(x + dx), (int)(y + dy), sprite.getWidth(), sprite.getHeight());
+		if(dx<1 && dx>-1 && dy <1 &&  dy>-1) {
+			me.setBounds((int)(x + Math.signum(dx)), (int)(y + Math.signum(dy) ), sprite.getWidth(), sprite.getHeight());
+		}else {
+			me.setBounds((int)(x + dx), (int)(y + dy), sprite.getWidth(), sprite.getHeight());
+		}
 		return me.intersects(other);
 	}  
 }

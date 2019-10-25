@@ -77,11 +77,7 @@ public class AssetLoader {
 			String line = reader.readLine();
 			String header;
 			while(line!=null) {
-				if(line.startsWith("header:")) {
-					header = line;
-				}else {
-					content += line+":";
-				}
+				content += line+":";
 				line = reader.readLine();
 			}
 		} catch (IOException e) {

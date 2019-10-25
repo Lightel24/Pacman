@@ -33,7 +33,7 @@ public class Game{
         glOrtho(0, width, height, 0, -1, 1);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        glViewport(0, 0,(int) (width*1),(int) (height*1)); // Tester pour un zoom pas dégueu
+        glViewport(0, 0,(int) (width),(int) (height));
         
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

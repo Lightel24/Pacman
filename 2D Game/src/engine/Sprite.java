@@ -93,7 +93,8 @@ public class Sprite{
         // store the current model matrix
         glPushMatrix();
  
-        
+        glColor3f(1, 1, 1);
+
         // bind to the appropriate texture for this sprite
         frameTextures[currentFrame].bind();
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
