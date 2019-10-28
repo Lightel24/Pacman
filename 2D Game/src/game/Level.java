@@ -1,5 +1,17 @@
 package game;
 
+import static org.lwjgl.opengl.GL11.GL_LINES;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glColor3f;
+import static org.lwjgl.opengl.GL11.glDisable;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glPopMatrix;
+import static org.lwjgl.opengl.GL11.glPushMatrix;
+import static org.lwjgl.opengl.GL11.glRotatef;
+import static org.lwjgl.opengl.GL11.glTranslatef;
+import static org.lwjgl.opengl.GL11.glVertex2f;
+
 import java.awt.Point;
 import java.awt.Rectangle;
 
@@ -7,6 +19,7 @@ import engine.Entity;
 import engine.Sprite;
 
 public class Level {
+	private static final int offset = -8;
 	int[][] level;
 	Point spawn = new Point(Game.width/2,Game.height/2);
 	Rectangle[] collisions;		
@@ -35,6 +48,7 @@ public class Level {
 	}
 	
 	public void render() {
+		/*Ancien renderer
 		for(int y=0; y<level.length;y++) {
 			for(int x=0; x<level[y].length;x++){
 				if(level[y][x]==0) {
@@ -43,7 +57,49 @@ public class Level {
 					mur.draw(x*mur.getWidth(),  y*mur.getHeight());
 				}
 			}
+		}*/
+        glPushMatrix();
+		for(int y=0; y<level.length; y++) {
+			for(int x=0; x<level[y].length; x++) {
+				if(level[y][x]==1) {
+					// On vérifie si il y a des murs autour:
+					// En haut
+					if(y!=0 && level[y-1][x]!=1) {
+						renderLine(x*16,y*16,(x+1)*16,y*16);
+					}
+					// A droite
+					if(x != level[y].length-1 &&level[y][x+1]!=1) {
+						renderLine((x+1)*16,y*16,(x+1)*16,(y+1)*16);
+					}
+					// En bas
+					if(y != level.length-1 && level[y+1][x]!=1) {
+						renderLine(x*16,(y+1)*16,(x+1)*16,(y+1)*16);
+					}
+					// A gauche
+					if(x!=0 && level[y][x-1]!=1) {
+						renderLine(x*16,y*16,(x)*16,(y+1)*16);
+					}
+				}else if(level[y][x]==0) {
+					point.draw(x*mur.getWidth(), y*mur.getHeight());
+				}
+			}
 		}
+        glPopMatrix();
+	}
+	
+	private void renderLine(int x, int y, int x1, int y1) {
+		glDisable(GL_TEXTURE_2D);
+		
+        glTranslatef(0,0, 0);
+        glRotatef(0, 0, 0, 1);
+
+            glColor3f(0,0,1);
+        	glBegin(GL_LINES);
+            {
+                glVertex2f(x+offset,y+offset);
+                glVertex2f(x1+offset,y1+offset);
+            }
+            glEnd();
 	}
 
 	public boolean collideWithWall(Entity entity) {

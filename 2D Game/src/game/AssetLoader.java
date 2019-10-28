@@ -88,9 +88,9 @@ public class AssetLoader {
 		
 		Sprite mur = new Sprite(textureLoader,"mur", 1);
 		
-		return new Level(mur,new Sprite(textureLoader,"point", 1),data,loadCollision(data));
+		return new Level(mur,new Sprite(textureLoader,"point", 1),data ,loadCollision(data));
 	}
-	
+
 	public static void saveLevel(String data, int number) {
 		new Thread(){
 			@Override
