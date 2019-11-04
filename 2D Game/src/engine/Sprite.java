@@ -15,10 +15,9 @@ public class Sprite{
     /** The actual zoom of the sprite*/
     private float			zoom;
     
-    private int frameSpeed = 14;
-    private int counter = 0;
+    private float frameDelay = (1f/8f);
+    private float counter = 0;
     private float rotation = 0;
-    
     private int currentFrame = 0;
  
     /**
@@ -80,15 +79,16 @@ public class Sprite{
      * @param x The x location at which to draw this sprite
      * @param y The y location at which to draw this sprite
      */
-    public void draw(int x, int y) {
+    public void draw(int x, int y, float delta) {
     	if(frameTextures.length==1) {
     		currentFrame = 0;
     	}else {
-    		 if (counter == (frameSpeed - 1)) {
+    		 if (counter >= (frameDelay)) {
     		      currentFrame = (currentFrame + 1) % frameTextures.length;
+    		      counter=0;
     		 }
     		 
-    		 counter = (counter + 1) % frameSpeed;
+    		 counter = (counter + delta);
     	}
         
         glEnable(GL_TEXTURE_2D);
@@ -124,5 +124,10 @@ public class Sprite{
         // restore the model view matrix to prevent contamination
         glPopMatrix();
     }
+
+	public void draw(int i, int j) {
+		draw(i,j,0f);
+		
+	}
 }
 

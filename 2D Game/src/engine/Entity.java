@@ -20,9 +20,14 @@ public abstract class Entity {
 		y+=dy;
 	}
 
+	public void draw(float delta){
+		sprite.draw((int) x,(int) y,delta);
+	}
+	
 	public void draw(){
 		sprite.draw((int) x,(int) y);
 	}
+	
 	public Sprite getSprite() {
 		return sprite;
 	}

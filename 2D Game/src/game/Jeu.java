@@ -40,8 +40,8 @@ public class Jeu extends GameState{
 
 	@Override
 	public void render() {
-		level.render();
-		pacman.draw();
+		level.render(delta);
+		pacman.draw(delta);
 	}
 	
 	

@@ -47,7 +47,7 @@ public class Level {
 		
 	}
 	
-	public void render() {
+	public void render(float delta) {
 		/*Ancien renderer
 		for(int y=0; y<level.length;y++) {
 			for(int x=0; x<level[y].length;x++){
@@ -80,7 +80,7 @@ public class Level {
 						renderLine(x*16,y*16,(x)*16,(y+1)*16);
 					}
 				}else if(level[y][x]==0) {
-					point.draw(x*mur.getWidth(), y*mur.getHeight());
+					point.draw(x*mur.getWidth(), y*mur.getHeight(),delta);
 				}
 			}
 		}
